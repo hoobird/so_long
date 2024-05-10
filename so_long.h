@@ -6,7 +6,7 @@
 /*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 22:10:26 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/10 03:57:18 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/10 19:44:44 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,18 @@
 # include <unistd.h>
 # include <fcntl.h>
 
-typedef struct s_mlx
+typedef struct s_game
 {
 	void	*mlx;
 	void	*win;
-}		t_mlx;
+	char	**map;
+	int		mapwidth;
+	int		mapheight;
+	int		playerx;
+	int		playery;
+	int		playermoves;
+	int		collectibles;
+	int		collectiblesfound;
+}		t_game;
 
 #endif

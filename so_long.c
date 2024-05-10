@@ -6,7 +6,7 @@
 /*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 22:11:36 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/10 04:09:09 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/10 23:21:21 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ int	checkmapborder(char **map)
 	}
 	return (1);
 }
+
 int check_symbol(char symbol, int *player, int *exit, int *collectible)
 {
 	if (symbol == 'P')
@@ -192,14 +193,24 @@ int	validatemap(char **map)
 	return (1); 
 }
 
-void	printmap(char **map)
+void	printmap(t_game *mlxstruct)
 {
 	int		i;
+	int		j;
 
 	i = 0;
-	while (map[i])
+	while (mlxstruct->map[i] != NULL)
 	{
-		ft_printf("%s\n", map[i]);
+		j = 0;
+		while (mlxstruct->map[i][j])
+		{
+			if (i == mlxstruct->playery && j == mlxstruct->playerx)
+				ft_printf("P");
+			else
+				ft_printf("%c", mlxstruct->map[i][j]);
+			j++;
+		}
+		ft_printf("\n");
 		i++;
 	}
 }
@@ -211,9 +222,7 @@ void	freemap(char **map)
 	i = 0;
 	while (map[i] != NULL)
 	{
-		ft_printf("freeing map[%d]\n", i);
 		free(map[i]);
-		ft_printf("freed map[%d]\n", i);
 		i++;
 	}
 	free(map);
@@ -254,47 +263,158 @@ int	printerror()
 	return (0);
 }
 
-int	keybinds(int keycode, void *param)
+int	destroy(t_game *mlxstruct)
 {
-	if (keycode == 65307)
-		exit(0);
-	ft_printf("keycode: %d\n", keycode);
-	return (0);
+	mlx_destroy_window(mlxstruct->mlx, mlxstruct->win);
+	freemap(mlxstruct->map);
+	free(mlxstruct);
+	exit(0);
 }
 
-int	destroy(int keycode, void *param)
+void	move(t_game *mlxstruct, char dir)
 {
-	t_mlx	*mlxstruct;
+	int		newx;
+	int		newy;
 
-	mlxstruct = (t_mlx *)param;
-	mlx_destroy_window(mlxstruct->mlx, mlxstruct->win);
-	// exit(0);
-	return (0);
+	newx = mlxstruct->playerx;
+	newy = mlxstruct->playery;
+	if (dir == 'u')
+		newy--;
+	if (dir == 'd')
+		newy++;
+	if (dir == 'l')
+		newx--;
+	if (dir == 'r')
+		newx++;
+	if (mlxstruct->map[newy][newx] == '1')
+		return ;
+	if (mlxstruct->map[newy][newx] == 'C')
+	{
+		mlxstruct->collectiblesfound++;
+		mlxstruct->map[newy][newx] = '0';
+	}
+	mlxstruct->playerx = newx;
+	mlxstruct->playery = newy;
+	printmap(mlxstruct);
+}
+
+int	keybindings(int keycode, t_game *mlxstruct)
+{
+	ft_printf("Key pressed: %d\n", keycode);
+	if (keycode == 65307)
+		destroy(mlxstruct);
+	if (keycode == 119)
+		move(mlxstruct, 'u');
+	if (keycode == 115)
+		move(mlxstruct, 'd');
+	if (keycode == 97)
+		move(mlxstruct, 'l');
+	if (keycode == 100)
+		move(mlxstruct, 'r');
+}
+
+void	bindings(t_game *mlxstruct)
+{
+	mlx_hook(mlxstruct->win, 17, 0L, destroy, mlxstruct);
+	mlx_hook(mlxstruct->win, 2, 1L<<0, keybindings, mlxstruct);
+}
+
+int	getmapheight(char **map)
+{
+	int		i;
+
+	i = 0;
+	while (map[i] != NULL)
+		i++;
+	return (i);
+}
+
+void	getplayercollectwherabouts(t_game *mlxstruct)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	mlxstruct->collectibles = 0;
+	while (mlxstruct->map[i] != NULL)
+	{
+		j = 0;
+		while (mlxstruct->map[i][j])
+		{
+			if (mlxstruct->map[i][j] == 'P')
+			{
+				mlxstruct->playerx = j;
+				mlxstruct->playery = i;
+				mlxstruct->map[i][j] = '0';
+			}
+			if (mlxstruct->map[i][j] == 'C')
+				mlxstruct->collectibles++;
+			j++;
+		}
+		i++;
+	}
+}
+
+void	setupmlx(t_game *mlxstruct, char **map)
+{
+	mlxstruct->mlx = mlx_init();
+	mlxstruct->mapwidth = ft_strlen(map[0]);
+	mlxstruct->mapheight = getmapheight(map);
+	mlxstruct->win = mlx_new_window(mlxstruct->mlx, mlxstruct->mapwidth * 64, mlxstruct->mapheight * 64, "Hello world!");
+	mlxstruct->map = map;
+	getplayercollectwherabouts(mlxstruct);
+	mlxstruct->playermoves = 0;
+	mlxstruct->collectiblesfound = 0;
+}
+
+void	displaymap(t_game *mlxstruct)
+{
+	int		i;
+	int		j;
+	void	*img;
+	int		dummya;
+	int		dummyb;
+
+	i = 0;
+	while (mlxstruct->map[i] != NULL)
+	{
+		j = 0;
+		while (mlxstruct->map[i][j])
+		{
+			if (mlxstruct->map[i][j] == '1')
+				img = mlx_xpm_file_to_image(mlxstruct->mlx, "./wall.xpm", &dummya, &dummyb);
+			if (mlxstruct->map[i][j] == '0')
+				img = mlx_xpm_file_to_image(mlxstruct->mlx, "./ground.xpm", &dummya, &dummyb);
+			if (mlxstruct->map[i][j] == 'C')
+				img = mlx_xpm_file_to_image(mlxstruct->mlx, "./batterynew.xpm", &dummya, &dummyb);
+			if (mlxstruct->map[i][j] == 'E')
+				img = mlx_xpm_file_to_image(mlxstruct->mlx, "./factorynew.xpm", &dummya, &dummyb);
+			mlx_put_image_to_window(mlxstruct->mlx, mlxstruct->win, img, j * 64, i * 64);
+			j++;
+		}
+		i++;
+	}
+	img = mlx_xpm_file_to_image(mlxstruct->mlx, "./robotnew.xpm", &dummya, &dummyb);
+	mlx_put_image_to_window(mlxstruct->mlx, mlxstruct->win, img, mlxstruct->playerx * 64, mlxstruct->playery * 64);
 }
 
 int	main(int argc, char **argv)
 {
 	char	**map;
-	t_mlx	*mlxstruct;
+	t_game	*mlxstruct;
 	void	*img;
-	int		width;
-	int		height;
 
 	if (argc != 2 || bercheck(trimfilename(argv[1])) == 0)
 		return (printerror());
 	map = readandvalidatemap(trimfilename(argv[1]));
 	if (map == NULL)
 		return (printerror());
-	printmap(map);
-	mlxstruct = malloc(sizeof(t_mlx));
-	mlxstruct->mlx = mlx_init();
-	mlxstruct->win = mlx_new_window(mlxstruct->mlx, 920, 640, "Hello world!");
-	img = mlx_xpm_file_to_image(mlxstruct->mlx, "./factorynew.xpm", &width, &height);
-	mlx_put_image_to_window(mlxstruct->mlx, mlxstruct->win, img, 0, 0);
-	mlx_key_hook(mlxstruct->win, keybinds, 0);
-	mlx_hook(mlxstruct->win, 17, 1L<<0, destroy, mlxstruct);
+	mlxstruct = malloc(sizeof(t_game));
+	setupmlx(mlxstruct, map);
+	printmap(mlxstruct);
+	displaymap(mlxstruct);
+	bindings(mlxstruct);
 	mlx_loop(mlxstruct->mlx);
-	freemap(map);
 	return (0);
 }
 
