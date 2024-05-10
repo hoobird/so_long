@@ -6,7 +6,7 @@
 /*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 22:10:26 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/10 19:44:44 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/11 03:53:07 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ typedef struct s_game
 	int		playermoves;
 	int		collectibles;
 	int		collectiblesfound;
+	void	**imgbg;
+	void	**imgfg;
+	void	**imgplayer;
 }		t_game;
 
 #endif

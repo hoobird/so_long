@@ -5,12 +5,14 @@ OBJ = $(SRC:.c=.o)
 FTPRINTF_PATH = ./ft_printf
 LIBFT_PATH = $(FTPRINTF_PATH)/libft
 FTPRINTF = $(FTPRINTF_PATH)/libftgnlprintf.a
+MINILIBXPATH = ./minilibx-linux
+MINILIBX = $(MINILIBXPATH)/libmlx_Linux.a
 NAME = prog
 
 all: $(NAME)
 
-$(NAME): $(OBJ) $(FTPRINTF)
-	$(CC) $(OBJ) $(FTPRINTF) minilibx-linux/libmlx_Linux.a minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm -lz -o $(NAME)
+$(NAME): $(OBJ) $(FTPRINTF) $(MINILIBX)
+	$(CC) $(OBJ) $(FTPRINTF) $(MINILIBX) -lXext -lX11 -lm -lz -o $(NAME)
 
 
 $(OBJ): $(SRC)
@@ -19,13 +21,18 @@ $(OBJ): $(SRC)
 $(FTPRINTF):
 	make -C $(FTPRINTF_PATH) all
 
+$(MINILIBX):
+	make -C $(MINILIBXPATH) all
+
 clean:
 	rm -f $(OBJ)
 	make -C $(FTPRINTF_PATH) clean
+	make -C $(MINILIBXPATH) clean
 
 fclean: clean
 	rm -f $(OBJ) $(NAME)
 	make -C $(FTPRINTF_PATH) fclean
+	make -C $(MINILIBXPATH) clean
 
 re:	fclean all
 

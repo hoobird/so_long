@@ -6,11 +6,13 @@
 /*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 22:11:36 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/10 23:21:21 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/11 03:33:37 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void	displaymap(t_game *mlxstruct);
 
 int	isspacee(char c)
 {
@@ -296,6 +298,7 @@ void	move(t_game *mlxstruct, char dir)
 	mlxstruct->playerx = newx;
 	mlxstruct->playery = newy;
 	printmap(mlxstruct);
+	displaymap(mlxstruct);
 }
 
 int	keybindings(int keycode, t_game *mlxstruct)
@@ -372,8 +375,8 @@ void	displaymap(t_game *mlxstruct)
 	int		i;
 	int		j;
 	void	*img;
-	int		dummya;
-	int		dummyb;
+	int		iconwidth;
+	int		iconheight;
 
 	i = 0;
 	while (mlxstruct->map[i] != NULL)
@@ -381,21 +384,21 @@ void	displaymap(t_game *mlxstruct)
 		j = 0;
 		while (mlxstruct->map[i][j])
 		{
+			img = mlx_xpm_file_to_image(mlxstruct->mlx, "./ground.xpm", &iconwidth, &iconheight);
+			mlx_put_image_to_window(mlxstruct->mlx, mlxstruct->win, img, j * iconheight, i * iconwidth);
 			if (mlxstruct->map[i][j] == '1')
-				img = mlx_xpm_file_to_image(mlxstruct->mlx, "./wall.xpm", &dummya, &dummyb);
-			if (mlxstruct->map[i][j] == '0')
-				img = mlx_xpm_file_to_image(mlxstruct->mlx, "./ground.xpm", &dummya, &dummyb);
+				img = mlx_xpm_file_to_image(mlxstruct->mlx, "./wall.xpm", &iconwidth, &iconheight);
 			if (mlxstruct->map[i][j] == 'C')
-				img = mlx_xpm_file_to_image(mlxstruct->mlx, "./batterynew.xpm", &dummya, &dummyb);
+				img = mlx_xpm_file_to_image(mlxstruct->mlx, "./batterynew.xpm", &iconwidth, &iconheight);
 			if (mlxstruct->map[i][j] == 'E')
-				img = mlx_xpm_file_to_image(mlxstruct->mlx, "./factorynew.xpm", &dummya, &dummyb);
-			mlx_put_image_to_window(mlxstruct->mlx, mlxstruct->win, img, j * 64, i * 64);
+				img = mlx_xpm_file_to_image(mlxstruct->mlx, "./factorynew.xpm", &iconwidth, &iconheight);
+			mlx_put_image_to_window(mlxstruct->mlx, mlxstruct->win, img, j * iconheight, i * iconwidth);
 			j++;
 		}
 		i++;
 	}
-	img = mlx_xpm_file_to_image(mlxstruct->mlx, "./robotnew.xpm", &dummya, &dummyb);
-	mlx_put_image_to_window(mlxstruct->mlx, mlxstruct->win, img, mlxstruct->playerx * 64, mlxstruct->playery * 64);
+	img = mlx_xpm_file_to_image(mlxstruct->mlx, "./robotnew.xpm", &iconwidth, &iconheight);
+	mlx_put_image_to_window(mlxstruct->mlx, mlxstruct->win, img, mlxstruct->playerx * iconheight, mlxstruct->playery * iconwidth);
 }
 
 int	main(int argc, char **argv)
