@@ -6,7 +6,7 @@
 /*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 22:11:36 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/11 22:57:27 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/12 17:44:34 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int	mapheightcount(char *file)
 	line = get_next_line(fd);
 	while (line)
 	{
-		ft_printf("linelen: %d\n", ft_strlen(line));
 		line = trimnewline(line);
 		if (line != NULL)
 			i++;
@@ -94,7 +93,6 @@ int	mapheightcount(char *file)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	ft_printf("i: %d\n", i);
 	return (i);
 }
 
@@ -270,7 +268,7 @@ int	destroy(t_game *mlxstruct)
 	mlx_destroy_image(mlxstruct->mlx, mlxstruct->imgexit);
 	mlx_destroy_image(mlxstruct->mlx, mlxstruct->imgcollectible);
 	mlx_destroy_image(mlxstruct->mlx, mlxstruct->imgplayer);
-	mlx_destroy_image(mlxstruct->mlx, mlxstruct->imgdisplay);
+	// mlx_destroy_image(mlxstruct->mlx, mlxstruct->imgdisplay);
 	freemap(mlxstruct->map);
 	mlx_destroy_window(mlxstruct->mlx, mlxstruct->win);
 	free(mlxstruct);
@@ -389,10 +387,9 @@ void	setupmlx(t_game *mlxstruct, char **map)
 	getplayercollectwherabouts(mlxstruct);
 	mlxstruct->playermoves = 0;
 	mlxstruct->collectiblesfound = 0;
-	mlxstruct->mapwidth = ft_strlen(map[0]) * mlxstruct->imgsize;
-	mlxstruct->mapheight = getmapheight(map) * mlxstruct->imgsize;
+	mlxstruct->mapwidth = 1920;
+	mlxstruct->mapheight = 1040;
 	mlxstruct->win = mlx_new_window(mlxstruct->mlx, mlxstruct->mapwidth, mlxstruct->mapheight, "so_long");
-	mlxstruct->imgdisplay = mlx_new_image(mlxstruct->mlx, mlxstruct->mapwidth, mlxstruct->mapheight);
 }
 
 void	drawimgpixelstoimg(t_game *mlxstruct, void *imgput, int x, int y)
@@ -404,6 +401,9 @@ void	drawimgpixelstoimg(t_game *mlxstruct, void *imgput, int x, int y)
 	int		temp;
 	int 	srcPixel;
 	int 	destPixel;
+
+	if (x < 0 || y < 0 || x >= mlxstruct->mapwidth || y >= mlxstruct->mapheight)
+		return ;
 
 	bufferput = mlx_get_data_addr(imgput, &temp, &temp, &temp);
 	bufferdisplay = mlx_get_data_addr(mlxstruct->imgdisplay, &temp, &temp, &temp);
@@ -428,6 +428,29 @@ void	drawimgpixelstoimg(t_game *mlxstruct, void *imgput, int x, int y)
 	}
 }
 
+int	positify(int i)
+{
+	if (i < 0)
+		return (-i);
+	return (i);
+}
+
+int	xoffset(t_game *mlxstruct)
+{
+	int		x;
+
+	x = mlxstruct->playerx * mlxstruct->imgsize;
+	return (mlxstruct->mapwidth / 2 - x);
+}
+
+int	yoffset(t_game *mlxstruct)
+{
+	int		y;
+
+	y = mlxstruct->playery * mlxstruct->imgsize;
+	return (mlxstruct->mapheight / 2 - y);
+}
+
 void	displaymap(t_game *mlxstruct)
 {
 	int		i;
@@ -436,25 +459,28 @@ void	displaymap(t_game *mlxstruct)
 	int		iconwidth;
 	int		iconheight;
 
+	mlxstruct->imgdisplay = mlx_new_image(mlxstruct->mlx, mlxstruct->mapwidth, mlxstruct->mapheight);
 	i = 0;
 	while (mlxstruct->map[i] != NULL)
 	{
 		j = 0;
 		while (mlxstruct->map[i][j])
 		{
-			drawimgpixelstoimg(mlxstruct, mlxstruct->imgfloor, j * mlxstruct->imgsize, i * mlxstruct->imgsize);
+			drawimgpixelstoimg(mlxstruct, mlxstruct->imgfloor, j * mlxstruct->imgsize + xoffset(mlxstruct), i * mlxstruct->imgsize + yoffset(mlxstruct));
 			if (mlxstruct->map[i][j] == '1')
-				drawimgpixelstoimg(mlxstruct, mlxstruct->imgwall, j * mlxstruct->imgsize, i * mlxstruct->imgsize);
+				drawimgpixelstoimg(mlxstruct, mlxstruct->imgwall, j * mlxstruct->imgsize+ xoffset(mlxstruct), i * mlxstruct->imgsize+ yoffset(mlxstruct));
 			if (mlxstruct->map[i][j] == 'E')
-				drawimgpixelstoimg(mlxstruct, mlxstruct->imgexit, j * mlxstruct->imgsize, i * mlxstruct->imgsize);
+				drawimgpixelstoimg(mlxstruct, mlxstruct->imgexit, j * mlxstruct->imgsize+ xoffset(mlxstruct), i * mlxstruct->imgsize+ yoffset(mlxstruct));
 			if (mlxstruct->map[i][j] == 'C')
-				drawimgpixelstoimg(mlxstruct, mlxstruct->imgcollectible, j * mlxstruct->imgsize, i * mlxstruct->imgsize);
+				drawimgpixelstoimg(mlxstruct, mlxstruct->imgcollectible, j * mlxstruct->imgsize+ xoffset(mlxstruct), i * mlxstruct->imgsize+ yoffset(mlxstruct));
 			j++;
 		}
 		i++;
 	}
-	drawimgpixelstoimg(mlxstruct, mlxstruct->imgplayer, mlxstruct->playerx * mlxstruct->imgsize, mlxstruct->playery * mlxstruct->imgsize);
+	drawimgpixelstoimg(mlxstruct, mlxstruct->imgplayer, mlxstruct->playerx * mlxstruct->imgsize+ xoffset(mlxstruct), mlxstruct->playery * mlxstruct->imgsize+ yoffset(mlxstruct));
+	mlx_clear_window(mlxstruct->mlx, mlxstruct->win);
 	mlx_put_image_to_window(mlxstruct->mlx, mlxstruct->win, mlxstruct->imgdisplay, 0, 0);
+	mlx_destroy_image(mlxstruct->mlx, mlxstruct->imgdisplay);
 }
 int repeat(t_game *mlxstruct)
 {
