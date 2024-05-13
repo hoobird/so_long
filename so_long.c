@@ -6,7 +6,7 @@
 /*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 22:11:36 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/12 17:44:34 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/13 17:31:24 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ void	printmap(t_game *mlxstruct)
 	}
 }
 
-void	freemap(char **map)
+void	*freemap(char **map)
 {
 	int		i;
 
@@ -224,6 +224,7 @@ void	freemap(char **map)
 		i++;
 	}
 	free(map);
+	return (NULL);
 }
 
 char	**readandvalidatemap(char *file)
@@ -248,10 +249,7 @@ char	**readandvalidatemap(char *file)
 		line = get_next_line(fd);
 	}
 	if (validatemap(map) == 0)
-	{
-		freemap(map);
-		return (NULL);
-	}
+		return (freemap(map));
 	return (map);
 }
 
