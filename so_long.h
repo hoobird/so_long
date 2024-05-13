@@ -6,7 +6,7 @@
 /*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 22:10:26 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/11 22:50:26 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/13 19:18:42 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,11 @@ typedef struct s_game
 	void	*imgplayer;
 	void	*imgdisplay;
 }		t_game;
+
+typedef struct s_floodhelper
+{
+	int		collectibles;
+	int		exits;
+} t_floodhelper;
 
 #endif

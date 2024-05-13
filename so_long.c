@@ -6,7 +6,7 @@
 /*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 22:11:36 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/13 17:31:24 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/13 21:01:13 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -480,11 +480,101 @@ void	displaymap(t_game *mlxstruct)
 	mlx_put_image_to_window(mlxstruct->mlx, mlxstruct->win, mlxstruct->imgdisplay, 0, 0);
 	mlx_destroy_image(mlxstruct->mlx, mlxstruct->imgdisplay);
 }
+
 int repeat(t_game *mlxstruct)
 {
 	displaymap(mlxstruct);
 	checkifwon(mlxstruct);
 	return (0);
+}
+
+char	**duplicatemap(t_game *mlxstruct)
+{
+	int		i;
+	int 	j;
+	char	**dupmap;
+
+	i = 0;
+	dupmap = malloc(sizeof(char *) * (getmapheight(mlxstruct->map) + 1));
+	while (i < getmapheight(mlxstruct->map))
+	{
+		dupmap[i] = malloc(sizeof(char) * (ft_strlen(mlxstruct->map[i]) + 1));
+		j = 0;
+		while (j < ft_strlen(mlxstruct->map[i]))
+		{
+			dupmap[i][j] = mlxstruct->map[i][j];
+			j++;
+		}
+		dupmap[i][j] = '\0';
+		i++;
+	}
+	return (dupmap);
+}
+void	printdupmap(char **dupmap, int x, int y)
+{
+	int	i;
+	int j;
+
+	i = 0;
+	while (dupmap[i])
+	{
+		j=0;
+		while (dupmap[i][j])
+		{
+			if (i == y && j == x)
+				ft_printf("F");
+			else
+				ft_printf("%c", dupmap[i][j]);
+			j++;
+		}
+		ft_printf("\n");
+		i++;
+	}
+	ft_printf("\n");
+}
+
+void	floodfill(char **dupmap, t_floodhelper *floodhelper, int x, int y)
+{
+	if (x < 0 || y < 0 || x >= ft_strlen(dupmap[y]) || y >= getmapheight(dupmap))
+		return ;
+	if (dupmap[y][x] == '1')
+		return ;
+	if (dupmap[y][x] == 'C')
+		floodhelper->collectibles++;
+	if (dupmap[y][x] == 'E')
+		floodhelper->exits++;
+	dupmap[y][x] = '1';
+	printdupmap(dupmap, x, y);
+	if (y > 0)
+		floodfill(dupmap, floodhelper, x, y - 1);
+	if (y < getmapheight(dupmap) - 1)
+		floodfill(dupmap, floodhelper, x, y + 1);
+	if (x > 0)
+		floodfill(dupmap, floodhelper, x - 1, y);
+	if (x < ft_strlen(dupmap[y]) - 1)
+		floodfill(dupmap, floodhelper, x + 1, y);
+}
+
+void	floodfillcheck(t_game *mlxstruct)
+{
+	char			**dupmap;
+	t_floodhelper	*floodhelper;
+
+	ft_printf("Floodfill check start\n");
+	dupmap = duplicatemap(mlxstruct);
+	floodhelper = malloc(sizeof(t_floodhelper));
+	floodhelper->collectibles = 0;
+	floodhelper->exits = 0;
+	floodfill(dupmap, floodhelper, mlxstruct->playerx, mlxstruct->playery);
+	freemap(dupmap);
+	if (floodhelper->collectibles != mlxstruct->collectibles || floodhelper->exits != 1)
+	{
+		free(floodhelper);
+		ft_printf("Error\n");
+		destroy(mlxstruct);
+	}
+	free(floodhelper);
+	ft_printf("Floodfill check end\n");
 }
 
 int	main(int argc, char **argv)
@@ -500,7 +590,7 @@ int	main(int argc, char **argv)
 		return (printerror());
 	mlxstruct = malloc(sizeof(t_game));
 	setupmlx(mlxstruct, map);
-	printmap(mlxstruct);
+	floodfillcheck(mlxstruct);
 	displaymap(mlxstruct);
 	bindings(mlxstruct);
 	mlx_loop_hook(mlxstruct->mlx, repeat, mlxstruct);
