@@ -6,7 +6,7 @@
 /*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 22:11:36 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/13 21:01:13 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/14 01:18:37 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -402,7 +402,6 @@ void	drawimgpixelstoimg(t_game *mlxstruct, void *imgput, int x, int y)
 
 	if (x < 0 || y < 0 || x >= mlxstruct->mapwidth || y >= mlxstruct->mapheight)
 		return ;
-
 	bufferput = mlx_get_data_addr(imgput, &temp, &temp, &temp);
 	bufferdisplay = mlx_get_data_addr(mlxstruct->imgdisplay, &temp, &temp, &temp);
 	i = 0;
@@ -415,6 +414,8 @@ void	drawimgpixelstoimg(t_game *mlxstruct, void *imgput, int x, int y)
 			if ((unsigned int) bufferput[srcPixel + 3] != 4294967295)
 			{
 				destPixel = ((y + i) * mlxstruct->mapwidth * 4) + ((x + j) * 4);
+				if (destPixel < 0 || destPixel >= mlxstruct->mapwidth * mlxstruct->mapheight * 4)
+					return ;
 				bufferdisplay[destPixel] = bufferput[srcPixel];
 				bufferdisplay[destPixel + 1] = bufferput[srcPixel + 1] ;
 				bufferdisplay[destPixel + 2] = bufferput[srcPixel + 2] ;
@@ -472,6 +473,8 @@ void	displaymap(t_game *mlxstruct)
 			if (mlxstruct->map[i][j] == 'C')
 				drawimgpixelstoimg(mlxstruct, mlxstruct->imgcollectible, j * mlxstruct->imgsize+ xoffset(mlxstruct), i * mlxstruct->imgsize+ yoffset(mlxstruct));
 			j++;
+			// mlx_put_image_to_window(mlxstruct->mlx, mlxstruct->win, mlxstruct->imgdisplay, 0, 0);
+			// usleep(100000);
 		}
 		i++;
 	}
@@ -495,17 +498,16 @@ char	**duplicatemap(t_game *mlxstruct)
 	char	**dupmap;
 
 	i = 0;
-	dupmap = malloc(sizeof(char *) * (getmapheight(mlxstruct->map) + 1));
+	dupmap = ft_calloc(getmapheight(mlxstruct->map) + 1, sizeof(char *));
 	while (i < getmapheight(mlxstruct->map))
 	{
-		dupmap[i] = malloc(sizeof(char) * (ft_strlen(mlxstruct->map[i]) + 1));
+		dupmap[i] = ft_calloc(ft_strlen(mlxstruct->map[i]) + 1, sizeof(char));
 		j = 0;
 		while (j < ft_strlen(mlxstruct->map[i]))
 		{
 			dupmap[i][j] = mlxstruct->map[i][j];
 			j++;
 		}
-		dupmap[i][j] = '\0';
 		i++;
 	}
 	return (dupmap);
@@ -544,7 +546,7 @@ void	floodfill(char **dupmap, t_floodhelper *floodhelper, int x, int y)
 	if (dupmap[y][x] == 'E')
 		floodhelper->exits++;
 	dupmap[y][x] = '1';
-	printdupmap(dupmap, x, y);
+	// printdupmap(dupmap, x, y);
 	if (y > 0)
 		floodfill(dupmap, floodhelper, x, y - 1);
 	if (y < getmapheight(dupmap) - 1)
