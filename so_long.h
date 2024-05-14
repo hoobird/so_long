@@ -6,7 +6,7 @@
 /*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 22:10:26 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/13 19:18:42 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/14 15:26:17 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,3 +52,5 @@ typedef struct s_floodhelper
 } t_floodhelper;
 
 #endif
+
+void displaycheckssymbol(t_game *mlxstruct, int j, int i);

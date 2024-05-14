@@ -1,0 +1,44 @@
+void	printdupmap(char **dupmap, int x, int y)
+{
+	int	i;
+	int j;
+
+	i = 0;
+	while (dupmap[i])
+	{
+		j=0;
+		while (dupmap[i][j])
+		{
+			if (i == y && j == x)
+				ft_printf("F");
+			else
+				ft_printf("%c", dupmap[i][j]);
+			j++;
+		}
+		ft_printf("\n");
+		i++;
+	}
+	ft_printf("\n");
+}
+
+void	printmap(t_game *mlxstruct)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (mlxstruct->map[i] != NULL)
+	{
+		j = 0;
+		while (mlxstruct->map[i][j])
+		{
+			if (i == mlxstruct->playery && j == mlxstruct->playerx)
+				ft_printf("P");
+			else
+				ft_printf("%c", mlxstruct->map[i][j]);
+			j++;
+		}
+		ft_printf("\n");
+		i++;
+	}
+}
