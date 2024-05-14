@@ -6,7 +6,7 @@
 /*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 22:10:26 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/14 15:26:17 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/14 22:41:17 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,62 @@ typedef struct s_floodhelper
 	int		exits;
 } t_floodhelper;
 
-#endif
+// so_setup.c
+void	setupmlx(t_game *mlxstruct, char **map);
+void	getplayercollectwherabouts(t_game *mlxstruct);
+void	whereaboutshelper(t_game *mlxstruct, int i, int j);
 
-void displaycheckssymbol(t_game *mlxstruct, int j, int i);
+// so_floodfill.c
+void	floodfillcheck(t_game *mlxstruct);
+char	**duplicatemap(t_game *mlxstruct);
+void	floodfill(char **dupmap, t_floodhelper *floodhelper, int x, int y);
+
+// so_stringstuff.c
+int		so_isspacee(char c);
+char	*so_trimfilename(char *filename);
+char	*so_trimnewline(char *line);
+int		bercheck(char *file);
+int		so_isspacee(char c);
+
+// so_mapvalidate.c
+char	**readandvalidatemap(char *file);
+int		validatemap(char **map);
+int		checkmaprect(char **map);
+int		checkmapborder(char **map);
+int		checkmapcontent(char **map);
+
+// so_maphelper.c
+int		mapheightcount(char *file);
+int		check_symbol(char symbol, int *player, int *exit, int *collectible);
+void	*freemap(char **map);
+int		getmapheight(char **map);
+
+// so_bindings.c
+void	bindings(t_game *mlxstruct);
+int		keybindings(int keycode, t_game *mlxstruct);
+
+// so_display.c
+void	displaymap(t_game *mlxstruct);
+void	displaycheckssymbol(t_game *mlxstruct, int j, int i);
+int		xoffset(t_game *mlxstruct);
+int		yoffset(t_game *mlxstruct);
+
+// so_display2.c
+void drawimgpixelstoimg(t_game *mlxs, void *imgput, int x, int y);
+
+void updatergba(char *bufferdisplay, int y, int i, t_game *mlxs, int x, int j, char *bufferput);
+
+// so_moving.c
+void move(t_game *mlxstruct, char dir);
+
+// so_byebye.c
+int destroy(t_game *mlxstruct);
+int printerror(void);
+
+// so_winning.c
+void checkifwon(t_game *mlxstruct);
+
+// so_long.c
+int	repeat(t_game *mlxstruct);
+
+#endif
