@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   so_mapvalidate.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: hulim <hulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:31:51 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/14 21:33:36 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/15 16:07:23 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "so_long.h"
+#include "so_long.h"
 
 char	**readandvalidatemap(char *file)
 {
@@ -81,7 +81,8 @@ int	checkmapborder(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (i == 0 || i == height || j == 0 || j == ft_strlen(map[i]) - 1)
+			if (i == 0 || i == height || j == 0
+				|| j == (int)(ft_strlen(map[i])) - 1)
 			{
 				if (map[i][j] != '1')
 					return (0);

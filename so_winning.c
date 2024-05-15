@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   so_winning.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: hulim <hulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 22:05:09 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/14 22:05:16 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/15 15:31:22 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "so_long.h"
+#include "so_long.h"
 
 void	checkifwon(t_game *mlxstruct)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_bindings.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: hulim <hulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:39:22 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/14 22:06:47 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/15 16:01:14 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,5 @@ int	keybindings(int keycode, t_game *mlxstruct)
 		move(mlxstruct, 'l');
 	if (keycode == 100)
 		move(mlxstruct, 'r');
+	return (0);
 }

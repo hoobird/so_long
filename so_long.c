@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: hulim <hulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 22:11:36 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/14 22:06:53 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/15 16:06:38 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	main(int argc, char **argv)
 {
 	char	**map;
 	t_game	*mlxstruct;
-	void	*img;
 
 	if (argc != 2 || bercheck(so_trimfilename(argv[1])) == 0)
 		return (printerror());
@@ -39,5 +38,3 @@ int	repeat(t_game *mlxstruct)
 	checkifwon(mlxstruct);
 	return (0);
 }
-
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: hulim <hulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 22:10:26 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/14 22:41:17 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/15 15:27:04 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 # include "ft_printf/libft/libft.h"
 # include <unistd.h>
 # include <fcntl.h>
+
+#ifndef ULONGMAX
+# define ULONGMAX 4294967295
+#endif
 
 typedef struct s_game
 {
@@ -92,9 +96,9 @@ int		xoffset(t_game *mlxstruct);
 int		yoffset(t_game *mlxstruct);
 
 // so_display2.c
-void drawimgpixelstoimg(t_game *mlxs, void *imgput, int x, int y);
-
-void updatergba(char *bufferdisplay, int y, int i, t_game *mlxs, int x, int j, char *bufferput);
+void	 drawimgpixelstoimg(t_game *mlxs, void *imgput, int x, int y);
+void	setbpbd(t_game *mlxs, void *imgput, char **bp, char **bd);
+void	putrgba(char *bufferdisplay, char *bufferput, int bdindex, int bpindex);
 
 // so_moving.c
 void move(t_game *mlxstruct, char dir);

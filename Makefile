@@ -11,8 +11,11 @@ NAME = prog
 
 all: $(NAME)
 
-$(NAME) : $(SRC) $(FTPRINTF) $(MINILIBX)
-	$(CC) -Imlx_linux -O3 $(SRC) $(FTPRINTF) $(MINILIBX) -lXext -lX11 -lm -lz  -o $(NAME)
+$(NAME) : $(MINILIBX) $(FTPRINTF) $(OBJ)
+	$(CC) $(FLAGS) -Imlx_linux $(OBJ) $(FTPRINTF) $(MINILIBX) -lXext -lX11 -lm -lz  -o $(NAME)
+
+$(OBJ): $(SRC)
+	$(CC) $(FLAGS) -c $(SRC)
 
 $(FTPRINTF):
 	make -C $(FTPRINTF_PATH) all

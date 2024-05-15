@@ -3,51 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   so_display2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: hulim <hulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 22:03:43 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/14 22:44:53 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/15 15:28:24 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
+/*
+bp : Buffer Put
+bd : Buffer Display
+*/
 void	drawimgpixelstoimg(t_game *mlxs, void *imgput, int x, int y)
 {
 	int		i;
 	int		j;
-	char	*bufferput;
-	char	*bufferdisplay;
-	int		temp;
+	char	*bp;
+	char	*bd;
 
 	if (x < 0 || y < 0 || x >= mlxs->mapwidth || y >= mlxs->mapheight)
 		return ;
-	bufferput = mlx_get_data_addr(imgput, &temp, &temp, &temp);
-	bufferdisplay = mlx_get_data_addr(mlxs->imgdisplay, &temp, &temp, &temp);
-	i = 0;
-	while (i < mlxs->imgsize)
+	setbpbd(mlxs, imgput, &bp, &bd);
+	i = -1;
+	while (++i < mlxs->imgsize)
 	{
-		j = 0;
-		while (j < mlxs->imgsize)
+		j = -1;
+		while (++j < mlxs->imgsize)
 		{
-			if ((unsigned int)bufferput[(i * mlxs->imgsize * 4) + (j * 4) + 3]
-				!= 4294967295)
+			if ((unsigned int)bp[4 * (i * mlxs->imgsize + j) + 3] != ULONGMAX)
 			{
-				if ((y + i) * mlxs->mapwidth * 4 + ((x + j) * 4) < 0
-					|| (y + i) * mlxs->mapwidth * 4 + ((x + j) * 4)
+				if (4 * ((y + i) * mlxs->mapwidth + (x + j)) < 0
+					|| 4 * ((y + i) * mlxs->mapwidth + (x + j))
 					>= mlxs->mapwidth * mlxs->mapheight * 4)
 					break ;
-				bufferdisplay[(y + i) * mlxs->mapwidth * 4 + ((x + j) * 4)]
-					= bufferput[(i * mlxs->imgsize * 4) + (j * 4)];
-				bufferdisplay[(y + i) * mlxs->mapwidth * 4 + ((x + j) * 4) + 1]
-					= bufferput[(i * mlxs->imgsize * 4) + (j * 4) + 1];
-				bufferdisplay[(y + i) * mlxs->mapwidth * 4 + ((x + j) * 4) + 2]
-					= bufferput[(i * mlxs->imgsize * 4) + (j * 4) + 2];
-				bufferdisplay[(y + i) * mlxs->mapwidth * 4 + ((x + j) * 4) + 3]
-					= bufferput[(i * mlxs->imgsize * 4) + (j * 4) + 3];
+				putrgba(bd, bp, 4 * ((y + i) * mlxs->mapwidth + (x + j)),
+					4 * (i * mlxs->imgsize + j));
 			}
-			j++;
 		}
-		i++;
 	}
+}
+
+void	setbpbd(t_game *mlxs, void *imgput, char **bp, char **bd)
+{
+	int	temp;
+
+	*bp = mlx_get_data_addr(imgput, &temp, &temp, &temp);
+	*bd = mlx_get_data_addr(mlxs->imgdisplay, &temp, &temp, &temp);
+}
+
+void	putrgba(char *bufferdisplay, char *bufferput, int bdindex, int bpindex)
+{
+	bufferdisplay[bdindex] = bufferput[bpindex];
+	bufferdisplay[bdindex + 1] = bufferput[bpindex + 1];
+	bufferdisplay[bdindex + 2] = bufferput[bpindex + 2];
+	bufferdisplay[bdindex + 3] = bufferput[bpindex + 3];
 }

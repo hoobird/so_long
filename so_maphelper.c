@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   so_maphelper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: hulim <hulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:36:22 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/14 22:06:55 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/15 15:31:08 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "so_long.h"
+#include "so_long.h"
 
 int	mapheightcount(char *file)
 {

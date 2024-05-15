@@ -3,22 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   so_display.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: hulim <hulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:51:14 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/14 21:56:05 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/15 16:08:00 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "so_long.h"
+#include "so_long.h"
 
 void	displaymap(t_game *mlxstruct)
 {
 	int		i;
 	int		j;
-	void	*img;
-	int		iconwidth;
-	int		iconheight;
 
 	mlxstruct->imgdisplay = mlx_new_image(mlxstruct->mlx, mlxstruct->mapwidth,
 			mlxstruct->mapheight);

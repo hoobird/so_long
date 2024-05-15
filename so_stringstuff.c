@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_stringstuff.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: hulim <hulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:27:40 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/14 22:08:51 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/15 15:31:58 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int	bercheck(char *file)
 	i = 0;
 	while (file[i])
 		i++;
-	if (file[i - 4] != '.' || file[i - 3] != 'b' || file[i - 2] != 'e' || file[i
-		- 1] != 'r')
+	if (file[i - 4] != '.' || file[i - 3] != 'b' || file[i - 2] != 'e'
+		|| file[i - 1] != 'r')
 		return (0);
 	return (1);
 }

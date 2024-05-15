@@ -1,6 +1,8 @@
 {
 	"files.associations": {
+		"*.embeddedhtml": "html",
 		"random": "cpp",
-		"so_long.h": "c"
+		"so_long.h": "c",
+		"unistd.h": "c"
 	}
 }
