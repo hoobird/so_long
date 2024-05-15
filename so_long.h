@@ -20,9 +20,9 @@
 # include <unistd.h>
 # include <fcntl.h>
 
-#ifndef ULONGMAX
-# define ULONGMAX 4294967295
-#endif
+# ifndef ULONGMAX
+#  define ULONGMAX 4294967295
+# endif
 
 typedef struct s_game
 {
@@ -53,7 +53,7 @@ typedef struct s_floodhelper
 {
 	int		collectibles;
 	int		exits;
-} t_floodhelper;
+}	t_floodhelper;
 
 // so_setup.c
 void	setupmlx(t_game *mlxstruct, char **map);
@@ -96,21 +96,21 @@ int		xoffset(t_game *mlxstruct);
 int		yoffset(t_game *mlxstruct);
 
 // so_display2.c
-void	 drawimgpixelstoimg(t_game *mlxs, void *imgput, int x, int y);
+void	drawimgpixelstoimg(t_game *mlxs, void *imgput, int x, int y);
 void	setbpbd(t_game *mlxs, void *imgput, char **bp, char **bd);
 void	putrgba(char *bufferdisplay, char *bufferput, int bdindex, int bpindex);
 
 // so_moving.c
-void move(t_game *mlxstruct, char dir);
+void	move(t_game *mlxstruct, char dir);
 
 // so_byebye.c
-int destroy(t_game *mlxstruct);
-int printerror(void);
+int		destroy(t_game *mlxstruct);
+int		printerror(void);
 
 // so_winning.c
-void checkifwon(t_game *mlxstruct);
+void	checkifwon(t_game *mlxstruct);
 
 // so_long.c
-int	repeat(t_game *mlxstruct);
+int		repeat(t_game *mlxstruct);
 
 #endif
