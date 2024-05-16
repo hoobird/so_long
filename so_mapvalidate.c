@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_mapvalidate.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hulim <hulim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:31:51 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/15 16:07:23 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/16 16:04:55 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	checkmapborder(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (i == 0 || i == height || j == 0
+			if (i == 0 || i == height - 1 || j == 0
 				|| j == (int)(ft_strlen(map[i])) - 1)
 			{
 				if (map[i][j] != '1')

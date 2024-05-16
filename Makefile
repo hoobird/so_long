@@ -7,7 +7,7 @@ LIBFT_PATH = $(FTPRINTF_PATH)/libft
 FTPRINTF = $(FTPRINTF_PATH)/libftgnlprintf.a
 MINILIBXPATH = ./minilibx-linux
 MINILIBX = $(MINILIBXPATH)/libmlx_Linux.a
-NAME = prog
+NAME = so_long
 
 all: $(NAME)
 
