@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_display2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hulim <hulim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 22:03:43 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/15 15:28:24 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/17 00:17:42 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	drawimgpixelstoimg(t_game *mlxs, void *imgput, int x, int y)
 	char	*bp;
 	char	*bd;
 
-	if (x < 0 || y < 0 || x >= mlxs->mapwidth || y >= mlxs->mapheight)
-		return ;
 	setbpbd(mlxs, imgput, &bp, &bd);
 	i = -1;
 	while (++i < mlxs->imgsize)
@@ -33,10 +31,9 @@ void	drawimgpixelstoimg(t_game *mlxs, void *imgput, int x, int y)
 		{
 			if ((unsigned int)bp[4 * (i * mlxs->imgsize + j) + 3] != ULONGMAX)
 			{
-				if (4 * ((y + i) * mlxs->mapwidth + (x + j)) < 0
-					|| 4 * ((y + i) * mlxs->mapwidth + (x + j))
-					>= mlxs->mapwidth * mlxs->mapheight * 4)
-					break ;
+				if (y + i >= mlxs->mapheight || y + i < 0
+					|| x + j >= mlxs->mapwidth || x + j < 0)
+					continue ;
 				putrgba(bd, bp, 4 * ((y + i) * mlxs->mapwidth + (x + j)),
 					4 * (i * mlxs->imgsize + j));
 			}
