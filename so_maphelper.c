@@ -6,7 +6,7 @@
 /*   By: hulim <hulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:36:22 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/15 15:31:08 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/24 22:46:04 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,24 @@ int	mapheightcount(char *file)
 	int		fd;
 	char	*line;
 	int		i;
+	int		fail;
 
 	fd = open(file, O_RDONLY);
 	i = 0;
+	fail = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
 		line = so_trimnewline(line);
-		if (line != NULL)
-			i++;
+		if (line == NULL)
+			fail = 1;
+		i++;
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
+	if (fail == 1)
+		return (0);
 	return (i);
 }
 

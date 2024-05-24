@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_mapvalidate.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hulim <hulim@student.42singapore.sg>       +#+  +:+       +#+        */
+/*   By: hulim <hulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:31:51 by hulim             #+#    #+#             */
-/*   Updated: 2024/05/16 16:04:55 by hulim            ###   ########.fr       */
+/*   Updated: 2024/05/24 22:55:15 by hulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ char	**readandvalidatemap(char *file)
 	char	**map;
 	int		i;
 
+	i = 0;
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		return (NULL);
-	i = 0;
+	if (mapheightcount(file) == 0)
+		return (NULL);
 	map = ft_calloc(mapheightcount(file) + 1, sizeof(char *));
 	line = get_next_line(fd);
 	while (line)
