@@ -1,4 +1,4 @@
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 SRC = ft_isalnum.c ft_isalpha.c ft_isdigit.c ft_isascii.c ft_isprint.c \
@@ -31,12 +31,9 @@ all:	$(NAME)
 
 $(NAME):	$(OBJ)
 	ar rcs $(NAME) $(OBJ)
-	
-$(OBJ):	$(SRC)
-	$(CC)  $(CFLAGS) -c $(SRC)
 
-$(OBJB): $(SRCB)
-	$(CC)  $(CFLAGS) -c $(SRCB)
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJGNL): $(SRCGNL)
 	$(CC)  $(CFLAGS) -c $(SRCGNL)

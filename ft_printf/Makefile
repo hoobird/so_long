@@ -16,8 +16,8 @@ $(NAME): $(OBJ) $(LIBFT)
 	cp $(LIBFT) $(NAME)
 	ar rcs $(NAME) $(OBJ) 
 	
-$(OBJ):	$(SRC)
-	$(CC)  $(CFLAGS) -c $(SRC)
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
 	make -C $(LIBFTPATH) new

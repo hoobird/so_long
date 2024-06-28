@@ -1,4 +1,4 @@
-CC = cc -g
+CC = cc
 FLAGS = -Wall -Wextra -Werror
 SRC = so_bindings.c  so_byebye.c  so_display2.c  so_display.c  so_floodfill.c  so_long.c  so_maphelper.c  so_mapvalidate.c  so_moving.c  so_setup.c  so_stringstuff.c  so_winning.c
 OBJ = $(SRC:.c=.o)
@@ -14,8 +14,8 @@ all: $(NAME)
 $(NAME) : $(MINILIBX) $(FTPRINTF) $(OBJ)
 	$(CC) $(FLAGS) -Imlx_linux $(OBJ) $(FTPRINTF) $(MINILIBX) -lXext -lX11 -lm -lz  -o $(NAME)
 
-$(OBJ): $(SRC)
-	$(CC) $(FLAGS) -c $(SRC)
+%.o: %.c
+	$(CC) $(FLAGS) -c $< -o $@
 
 $(FTPRINTF):
 	make -C $(FTPRINTF_PATH) all
@@ -35,4 +35,4 @@ fclean: clean
 
 re:	fclean all
 
-phony: all fclean clean re libft ft_printf so_long
+.phony: all fclean clean re libft ft_printf so_long
